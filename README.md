@@ -1,5 +1,7 @@
 # Clock-in kata
 
+[![Build Status](https://github.com/manelfera/clock-in-kata/actions/workflows/node.js.yml/badge.svg)](https://github.com/manelfera/clock-in-kata/actions/workflows/node.js.yml)
+
 Practice writing (tests with) Promises.
 
 ## Contents
