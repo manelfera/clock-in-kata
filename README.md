@@ -2,7 +2,20 @@
 
 Practice writing (tests with) Promises.
 
-# What is the task?
+## Contents
+1. [Description of the exercise](#description-of-the-exercise)
+    * [What is the task?](#what-is-the-task)
+    * [Where to start?](#where-to-start)
+    * [Next Steps](#next-steps)
+    * [Promise test libraries](#promise-test-libraries)
+    * [What to do?](#what-to-do)
+
+2. [Solution](#solution)
+    * [How to run tests?](#how-to-run-test)
+
+
+## Description of the exercise
+### What is the task?
 
 A time tracking tool, that optionally also accepts GPS positions.
 Implement the collecting of all GPS data (using promises) and sending to the server using some asynchronous method, like XHR or fetch (using promises too).
@@ -13,7 +26,7 @@ Or in other words: the "boss" can determine
 2) GPS can be optionally added to the XHR data to be sent, getting GPS is async too,
 3) require GPS data to be sent with the XHR
 
-# Where to start?
+### Where to start?
 
 - start with case 1), the simplest
 - mock/stub the actual XHR and build all cases incl. error cases that might happen when sending an XHR
@@ -21,7 +34,7 @@ Or in other words: the "boss" can determine
 - case 3) incl. retrying should be a piece of cake now
 - prevent that any test times out, ensure that all Promise-paths are tested
 
-# Next steps
+### Next steps
 
 If you want to get more challenging you can go the next steps like this:
 - search for a library that makes testing with Promises easier
@@ -32,7 +45,7 @@ If you want to get more challenging you can go the next steps like this:
   that the clock-in call NEVER starts before the gps-retreival had
   finished
 
-# Promise test libraries
+### Promise test libraries
 
 - [mocha] brings built in promise support
 - [chai-as-promised] adds promise support to [chai]
@@ -51,6 +64,19 @@ If you want to get more challenging you can go the next steps like this:
 [hamjest-promise-support]: https://github.com/rluba/hamjest/wiki/Matcher-documentation#promise-matchers
 
 
-# What to do?
+### What to do?
 
 ![the tasks](clock-in-kata-cases.png)
+
+## Solution
+### How to run tests?
+
+Open a terminal and type the following
+```shell
+$ npm test
+```
+
+*Before running the tests packages have to be installed:*
+```shell
+$ npm install
+``` 
