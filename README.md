@@ -73,12 +73,29 @@ If you want to get more challenging you can go the next steps like this:
 ## Solution
 ### How to run tests?
 
+*Before running the tests packages have to be installed:*
+```shell
+$ npm install
+``` 
+
 Open a terminal and type the following
 ```shell
 $ npm test
 ```
 
-*Before running the tests packages have to be installed:*
-```shell
-$ npm install
-``` 
+### Key points of my solution
+The usage of sinon library to mock responses.
+
+### What's missing?
+The third test case is not implemented and neither the bonus task.
+The usage of async and timeouts is not taken into consideration.
+
+### What can be improved
+The use of promises is very poor and it can be improved a lot. This code is 
+
+### Is this code ready to be shipped to production?  
+In short, this code is not ready to be deployed to production.  
+
+It just has passing green tests with all the logic stubbed, so there's no communication anywhere.   
+ 
+The methods `isServerAvailable` and `isGpsAvailable` must be renamed to `sendInformationToServer` and `retrieveGpsPosition` and have its logic implemented.
