@@ -1,26 +1,17 @@
 import assert from 'assert';
 import sinon from 'sinon';
 import { sendClockIn, sendPositionClockIn } from './send-clockin';
-
 import server from './server'
-function availableGpsCoordinates() {
-  return "02.02"
-}
-
-const gpsIsAvailable = new Promise((resolve, reject) => {
-  resolve(availableGpsCoordinates);
-});
-
-const gpsIsNotAvailable = new Promise((resolve, reject) => {
-  reject();
-});
+import gps from './gps'
 
 describe('time tracking', () => {
 
   let isServerAvailable;
+  let isGpsAvailable;
 
   before(() => {
     isServerAvailable = sinon.stub(server, 'isServerAvailable');
+    isGpsAvailable = sinon.stub(gps, 'isGpsAvailable');
   });
 
   context('Only time tracking', () => {
@@ -45,68 +36,76 @@ describe('time tracking', () => {
 
   });
 
-  // context('GPS is optional', () => {
+  context('GPS is optional', () => {
 
-  //   context('GPS is available', () => {
+    context('GPS is available', () => {
 
-  //     context('Server is available', () => {
+      context('Server is available', () => {
 
-  //       it('should clock-in with GPS data', done => {
-  //         sendPositionClockIn(1, gpsIsAvailable).then(function (res) {
-  //           assert(res === "GPS");
-  //           done();
-  //         });
-  //         sendPositionClockIn.returns
-  //         commitTime.returns(testScheduler.createColdObservable('-a'));
-  //       });
+        it('should clock-in with GPS data', done => {
+          
+          isGpsAvailable.returns(true);
+          isServerAvailable.returns(true);
 
-  //     });
+          sendPositionClockIn().then(function (res) {
+            assert(res === "OK");
+            done();
+          });
+          
+        });
 
-  //     context('Server is not available', () => {
+      });
 
-  //       it('should report an error', done => {
-  //         sendPositionClockIn(0, gpsIsAvailable).then(() => {
-  //           assert(false);
-  //         }).catch(function (res) {
-  //           assert(res === "KO");
-  //           done();
-  //         });
-  //       });
+      context('Server is not available', () => {
 
-  //     });
+        it('should report an error', done => {
+          isGpsAvailable.returns(true);
+          isServerAvailable.returns(false);
+          sendPositionClockIn().then(() => {
+            assert(false);
+          }).catch(function (res) {
+            assert(res === "KO");
+            done();
+          });
+        });
 
-  //   });
+      });
 
-  //   context('GPS is not available', () => {
+    });
 
-  //     context('Server is available', () => {
+    context('GPS is not available', () => {
 
-  //       it('should clock-in with a GPS warning', done => {
-  //         sendPositionClockIn(1, gpsIsNotAvailable).then(function (res) {
-  //           assert(res === "NOTGPS");
-  //           done();
-  //         });
+      context('Server is available', () => {
 
-  //       });
+        it('should clock-in with a GPS warning', done => {
+          isGpsAvailable.returns(false);
+          isServerAvailable.returns(true);
+          sendPositionClockIn().then(function (res) {
+            assert(res === "OK + GPS WARN");
+            done();
+          });
 
-  //     });
+        });
 
-  //     context('Server is not available', () => {
+      });
 
-  //       it('should report an error and a GPS warning', done => {
+      context('Server is not available', () => {
 
-  //         sendPositionClockIn(0, gpsIsNotAvailable).then(() => {
-  //           assert(false);
-  //         }).catch(function (res) {
-  //           assert(res === "KO");
-  //           done();
-  //         });
-  //       });
+        it('should report an error and a GPS warning', done => {
+          isGpsAvailable.returns(false);
+          isServerAvailable.returns(false);
+          sendPositionClockIn().then(() => {
+            assert(false);
+          }).catch(function (res) {
+            assert(res === "KO + GPS WARN");
+            done();
+          });
+        });
 
-  //     });
+      });
 
-  //   });
+    });
 
-  // });
+  });
 });
 

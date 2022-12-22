@@ -1,3 +1,4 @@
+const gps = require('./gps');
 const server = require('./server');
 
 module.exports = {
@@ -23,18 +24,22 @@ function sendClockIn() {
     return myPromise
 }
 
-function sendPositionClockIn(duration, position){
+function sendPositionClockIn(){
     let myPromise = new Promise(function (myResolve, myReject) {
-        if (position){
-            myResolve("GPS");
+
+        if (gps.isGpsAvailable()){
+            if (server.isServerAvailable()){
+                myResolve("OK");
+            } else {
+                myReject("KO");
+            }
         } else {
-            myReject("NOTGPS");
-        }
-        if (duration > 0) {        
-            myResolve("OK");
-        } else {
-            myReject("KO");
-        }
+            if (server.isServerAvailable()){
+                myResolve("OK + GPS WARN");
+            } else {
+                myReject("KO + GPS WARN");
+            }
+        }        
     });
 
     myPromise.then(
