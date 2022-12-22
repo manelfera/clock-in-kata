@@ -4,7 +4,7 @@ import { sendClockIn, sendPositionClockIn } from './send-clockin';
 import server from './server'
 import gps from './gps'
 
-describe('time tracking', () => {
+describe('Time Tracking', () => {
 
   let isServerAvailable;
   let isGpsAvailable;
@@ -14,36 +14,42 @@ describe('time tracking', () => {
     isGpsAvailable = sinon.stub(gps, 'isGpsAvailable');
   });
 
-  context('Only time tracking', () => {
+  context('1. Only time tracking', () => {
 
-    it('should track time', (done) => {
-      isServerAvailable.returns(true);      
-      sendClockIn().then(function (res) {
-        assert(res === "OK");
-        done();
+    context('Server is available', () => {
+
+      it('should track time', (done) => {
+        isServerAvailable.returns(true);
+        sendClockIn().then(function (res) {
+          assert(res === "OK");
+          done();
+        });
       });
     });
 
-    it('try track time but error', (done) => {
-      isServerAvailable.returns(false);
-      sendClockIn().then(() => {
-        assert(false);
-      }).catch(function (res) {
-        assert(res === "KO");
-        done();
+    context('Server is not available', () => {
+
+      it('try track time but error', (done) => {
+        isServerAvailable.returns(false);
+        sendClockIn().then(() => {
+          assert(false);
+        }).catch(function (res) {
+          assert(res === "KO");
+          done();
+        });
       });
     });
 
   });
 
-  context('GPS is optional', () => {
+  context('2. GPS is optional', () => {
 
     context('GPS is available', () => {
 
       context('Server is available', () => {
 
         it('should clock-in with GPS data', done => {
-          
+
           isGpsAvailable.returns(true);
           isServerAvailable.returns(true);
 
@@ -51,7 +57,7 @@ describe('time tracking', () => {
             assert(res === "OK");
             done();
           });
-          
+
         });
 
       });
